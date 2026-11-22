@@ -348,11 +348,18 @@ if(VIDEO){const f=document.getElementById('film'),v=media(VIDEO);v.controls=true
 // Galaxia: las fotos salen del centro en espiral
 (function(){
   const g=document.getElementById('galaxy'),cv2=document.getElementById('gal'),c=cv2.getContext('2d');
-  const dpr=Math.min(devicePixelRatio||1,2),N=GALAXIA_TOTAL>0?GALAXIA_TOTAL:14;let S=0,vis=false,started=false;
+  const dpr=Math.min(devicePixelRatio||1,1.5),N=GALAXIA_TOTAL>0?GALAXIA_TOTAL:14;let S=0,vis=false,started=false;
   const s=Math.min(16,79/Math.sqrt(N)),edge=50-s/2-1;
   g.classList.toggle('many',N>40);
   const lb=document.getElementById('lb');
   const closeLb=()=>{lb.style.display='none';lb.innerHTML=''};
+  const galaxyImageObserver=new IntersectionObserver(entries=>{
+    entries.forEach(entry=>{
+      if(!entry.isIntersecting)return;
+      entry.target.loadGalaxyImage?.();
+      galaxyImageObserver.unobserve(entry.target);
+    });
+  },{rootMargin:'180px'});
   lb.onclick=ev=>{if(ev.target.tagName!=='VIDEO')closeLb()};
   addEventListener('keydown',e=>{if(e.key==='Escape')closeLb()});
   for(let i=0;i<N;i++){
@@ -364,8 +371,19 @@ if(VIDEO){const f=document.getElementById('film'),v=media(VIDEO);v.controls=true
     g.appendChild(el);
     const sl=el.querySelector('.slot'),inp=sl.querySelector('input');
     if(GALAXIA_TOTAL>0){
-      const m=media(`fotos/galaxia/${i+1}.jpg`);m.onerror=()=>el.remove();
-      sl.appendChild(m);inp.disabled=true;
+      const m=document.createElement('img');
+      m.loading='lazy';
+      m.decoding='async';
+      m.alt='';
+      m.onerror=()=>el.remove();
+      inp.disabled=true;
+      el.dataset.src=`fotos/galaxia/${i+1}.jpg`;
+      const loadImage=()=>{
+        if(!m.src)m.src=el.dataset.src;
+        if(!m.isConnected)sl.appendChild(m);
+      };
+      galaxyImageObserver.observe(el);
+      el.loadGalaxyImage=loadImage;
     }
     inp.onchange=()=>{const f=inp.files[0];if(!f)return;sl.querySelector('img,video')?.remove();
       const v=f.type.startsWith('video'),e=document.createElement(v?'video':'img');e.src=URL.createObjectURL(f);
@@ -375,7 +393,7 @@ if(VIDEO){const f=document.getElementById('film'),v=media(VIDEO);v.controls=true
       lb.appendChild(e);lb.style.display='grid'});
   }
   const st=[],cols2=['#fff4f0','#ffb48a','#ff8fb3','#b79cff'];
-  for(let i=0;i<1500;i++){const halo=i>1200,t=halo?Math.random():Math.pow(Math.random(),.7);
+  for(let i=0;i<700;i++){const halo=i>560,t=halo?Math.random():Math.pow(Math.random(),.7);
     st.push({a:halo?Math.random()*6.283:t*5+(Math.random()<.5?0:Math.PI)+(Math.random()-.5)*(.25+t*.5),r:t,z:Math.random()*1.6+.4,c:cols2[Math.random()*4|0],o:.3+Math.random()*.7})}
   function size(){S=g.clientWidth;cv2.width=S*dpr;cv2.height=S*dpr}
   function draw(t){
