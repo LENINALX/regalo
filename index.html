@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Para ti, Andrea</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;1,9..144,300;1,9..144,600&family=Manrope:wght@400;600&family=Caveat:wght@500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --night:#1a0b2e; --plum:#2d1450; --rose:#ff5c8a; --peach:#ffb48a; --lilac:#b79cff; --ivory:#fff4f0;
+  color-scheme:dark; box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+html{scroll-behavior:smooth;scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box;margin:0}
+body{background:radial-gradient(1200px 800px at 80% -10%,#4a1d7a55,transparent),radial-gradient(900px 700px at 0% 60%,#ff5c8a22,transparent),var(--night);color:var(--ivory);font:400 17px/1.7 Manrope,system-ui,sans-serif;overflow-x:hidden}
+#hearts{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:0}
+main,section{position:relative;z-index:1}
+section{padding:96px 6vw;max-width:1100px;margin:auto}
+h1,h2{font-family:Fraunces,serif;font-weight:300;font-style:italic;line-height:1.05}
+h2{font-size:clamp(2rem,5vw,3.2rem);margin-bottom:12px}
+.sub{color:#fff4f0bb;max-width:52ch;margin-bottom:40px}
+.hand{font-family:Caveat,cursive;color:var(--peach);font-size:1.5rem}
+
+/* HERO */
+.hero{min-height:100svh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;max-width:none}
+.hero h1{font-size:clamp(3.4rem,15vw,10rem);letter-spacing:-.03em;background:linear-gradient(100deg,var(--ivory),var(--peach) 45%,var(--rose));-webkit-background-clip:text;background-clip:text;color:transparent;animation:rise 1.6s cubic-bezier(.2,.8,.2,1) both}
+.hero .hand{animation:rise 1.6s .5s cubic-bezier(.2,.8,.2,1) both}
+.hero .heart{font-size:3rem;margin-top:28px;animation:beat 1.3s infinite;cursor:pointer;filter:drop-shadow(0 0 18px var(--rose));animation-delay:1.2s}
+.scroll{position:absolute;bottom:28px;color:#fff4f099;font-size:.85rem;animation:rise 2s 1.4s both}
+@keyframes rise{from{opacity:0;transform:translateY(40px) scale(.96);filter:blur(10px)}to{opacity:1;transform:none;filter:none}}
+@keyframes beat{0%,100%{transform:scale(1)}15%{transform:scale(1.25)}30%{transform:scale(1)}45%{transform:scale(1.18)}}
+
+/* CONTADOR */
+.count{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;max-width:700px}
+.count div{background:linear-gradient(160deg,#ffffff14,#ffffff05);border:1px solid #ffffff22;border-radius:22px;padding:22px 8px;text-align:center;backdrop-filter:blur(8px)}
+.count b{display:block;font:300 italic clamp(1.8rem,6vw,3rem)/1 Fraunces,serif;color:var(--peach)}
+.count span{font-size:.85rem;color:#fff4f0aa}
+
+/* MUSICA */
+.music-player{max-width:700px;display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:18px;padding:18px 20px;border:1px solid #ffffff22;border-radius:24px;background:linear-gradient(160deg,#ffffff16,#ffffff06);box-shadow:0 18px 50px #0005;backdrop-filter:blur(8px)}
+.music-play{width:58px;height:58px;border:0;border-radius:50%;background:linear-gradient(135deg,var(--rose),#b34cce);color:#fff;font-size:1.25rem;cursor:pointer;box-shadow:0 8px 28px #ff5c8a55}
+.music-play:disabled{opacity:.45;cursor:not-allowed;box-shadow:none}
+.music-info{min-width:0}
+.music-name{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font:italic 300 1.15rem Fraunces,serif}
+.music-progress{width:100%;height:5px;margin-top:10px;accent-color:var(--rose);cursor:pointer}
+.music-time{min-width:82px;text-align:right;font-size:.82rem;color:#fff4f0bb;font-variant-numeric:tabular-nums}
+.music-upload{display:inline-block;margin-top:16px;position:relative;overflow:hidden;border:1px solid #ffffff35;border-radius:999px;padding:10px 18px;font-size:.82rem;color:#fff4f0bb;cursor:pointer}
+.music-upload input{position:absolute;inset:0;opacity:0;cursor:pointer}
+.music-upload:focus-within{outline:3px solid var(--peach);outline-offset:3px}
+
+/* GALERÍA */
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:34px 26px}
+.pol{background:var(--ivory);color:#3a1d52;padding:12px 12px 18px;border-radius:6px;box-shadow:0 18px 40px #0008;transform:rotate(var(--r));transition:transform .5s cubic-bezier(.2,.8,.2,1),box-shadow .5s}
+.pol:hover{transform:rotate(0) scale(1.07);box-shadow:0 30px 60px #000a,0 0 40px #ff5c8a55;z-index:3}
+.slot{position:relative;display:grid;place-items:center;aspect-ratio:4/5;background:repeating-linear-gradient(45deg,#f3dfe6,#f3dfe6 12px,#f9e9ee 12px,#f9e9ee 24px);cursor:pointer;overflow:hidden;text-align:center;font-size:.9rem;color:#8a5a7a}
+.slot input{position:absolute;inset:0;opacity:0;cursor:pointer}
+.slot img,.slot video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.pol figcaption{font-family:Caveat,cursive;font-size:1.5rem;text-align:center;margin-top:10px;outline:none}
+.tip{margin-top:30px;font-size:.88rem;color:#fff4f099}
+.film{background:#0006;border:1px solid #ffffff22;border-radius:26px;padding:12px;box-shadow:0 0 70px #ff5c8a33}
+.film .slot{aspect-ratio:16/9;border-radius:16px;background:#ffffff0d;color:#fff4f0bb}
+.film .slot video{object-fit:contain;background:#000}
+
+/* GALAXIA */
+.galaxy{position:relative;width:min(100%,920px);aspect-ratio:1;margin:auto}
+.galaxy canvas{position:absolute;inset:0;width:100%;height:100%}
+.core{position:absolute;left:44%;top:44%;width:12%;aspect-ratio:1;display:grid;place-items:center;font:italic 300 clamp(.9rem,3vw,1.7rem) Fraunces,serif;color:#fff;text-shadow:0 0 18px var(--rose),0 0 40px var(--rose);animation:beat 2.4s infinite}
+.gx{position:absolute;aspect-ratio:1;z-index:2;transform:translate(var(--tx,0px),var(--ty,0px)) scale(.05) rotate(200deg);opacity:0;transition:transform 1.5s cubic-bezier(.16,.9,.24,1) var(--d),opacity 1s var(--d)}
+.galaxy.go .gx{transform:none;opacity:1}
+.gx:hover{z-index:5}
+.ph{width:100%;height:100%;border-radius:var(--br);animation:drift 7s ease-in-out infinite alternate;box-shadow:0 0 0 2px #ffb48acc,0 0 26px #ff5c8a88;transition:transform .4s,box-shadow .4s}
+.ph:hover{transform:scale(1.18);box-shadow:0 0 0 2px #fff,0 0 44px #ff5c8a}
+.galaxy .slot{aspect-ratio:auto;height:100%;border-radius:inherit;background:radial-gradient(circle,#ffffff22,#ffffff08);color:#fff;font-size:clamp(1rem,3vw,1.8rem)}
+.galaxy.many .ph{animation:none;box-shadow:0 0 0 1.5px #ffb48acc}
+@keyframes drift{from{translate:0 0;rotate:-2deg}to{translate:3px -9px;rotate:2deg}}
+#lb{position:fixed;inset:0;z-index:50;background:#000d;display:none;place-items:center;padding:4vw;cursor:zoom-out}
+#lb img,#lb video{max-width:92vw;max-height:86vh;border-radius:14px;box-shadow:0 0 80px #ff5c8a55}
+
+/* CARTA */
+.letter{background:linear-gradient(170deg,#fff4f0,#ffe3dc);color:#3a1d52;border-radius:6px 6px 26px 26px;padding:clamp(28px,6vw,64px);box-shadow:0 30px 80px #000a;font:400 clamp(1.1rem,2.2vw,1.35rem)/1.85 Fraunces,serif;min-height:320px;position:relative}
+.letter::after{content:"";display:inline-block;width:2px;height:1.1em;background:var(--rose);margin-left:3px;vertical-align:-3px;animation:blink 1s steps(1) infinite}
+.letter.done::after{display:none}
+@keyframes blink{50%{opacity:0}}
+
+/* RAZONES */
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:18px}
+.card{perspective:900px;height:170px;cursor:pointer;border:0;background:none;color:inherit;font:inherit;padding:0}
+.card i{position:absolute;inset:0;display:grid;place-items:center;border-radius:22px;padding:20px;text-align:center;backface-visibility:hidden;transition:transform .8s cubic-bezier(.2,.8,.2,1);font-style:normal}
+.card{position:relative}
+.card .f{background:linear-gradient(140deg,var(--rose),#a53a9a);font:italic 300 1.5rem Fraunces,serif}
+.card .b{background:#ffffff12;border:1px solid #ffffff30;transform:rotateY(180deg);font-size:1rem}
+.card.on .f{transform:rotateY(180deg)}.card.on .b{transform:rotateY(360deg)}
+
+/* FINAL */
+.end{text-align:center;padding-bottom:140px}
+.btn{margin-top:20px;border:0;border-radius:99px;padding:18px 40px;font:600 1.1rem Manrope,sans-serif;color:#fff;background:linear-gradient(100deg,var(--rose),#c04cd9);box-shadow:0 10px 40px #ff5c8a66;cursor:pointer;transition:transform .3s}
+.btn:hover{transform:scale(1.06)}.btn:focus-visible,.card:focus-visible,.slot:focus-within{outline:3px solid var(--peach);outline-offset:3px}
+.yes{display:none;font:italic 300 clamp(2rem,6vw,3.6rem)/1.1 Fraunces,serif;margin-top:34px;color:var(--peach)}
+.gift{margin:54px auto 0;max-width:520px}
+.gift[hidden]{display:none}
+.gift-box{position:relative;width:min(260px,70vw);height:190px;margin:38px auto 0;border:0;padding:0;background:transparent;cursor:pointer;color:inherit;outline:none}
+.gift-box:focus-visible{outline:3px solid var(--peach);outline-offset:8px;border-radius:18px}
+.box-body{position:absolute;left:8%;right:8%;bottom:0;height:65%;border-radius:10px 10px 18px 18px;background:linear-gradient(135deg,var(--rose),#aa3e96);box-shadow:0 18px 45px #0008}
+.box-lid{position:absolute;left:2%;right:2%;top:22%;height:26%;z-index:2;border-radius:12px;background:linear-gradient(135deg,#ff82a5,#c04cd9);box-shadow:0 8px 18px #0005;transition:transform .9s cubic-bezier(.2,.8,.2,1),opacity .6s}
+.box-ribbon-v{position:absolute;z-index:3;left:44%;top:0;bottom:0;width:12%;background:var(--peach);box-shadow:0 0 20px #ffb48a55}
+.box-ribbon-h{position:absolute;z-index:4;left:42%;top:-28px;width:16%;height:16%;border:5px solid var(--peach);border-radius:50%;transform:rotate(18deg);transition:transform .8s}
+.box-ribbon-h::after{content:"";position:absolute;left:38%;top:8px;width:112%;height:5px;border:5px solid var(--peach);border-left:0;border-radius:50%;transform:rotate(35deg)}
+.gift.open .box-lid{transform:translateY(-78px) rotate(-7deg);opacity:.85}
+.gift.open .box-ribbon-h{transform:translateY(-18px) rotate(35deg)}
+.gift-reveal{max-height:0;opacity:0;overflow:hidden;transform:translateY(20px);transition:max-height 1s ease,opacity .8s .35s,transform .8s .35s}
+.gift.open .gift-reveal{max-height:420px;opacity:1;transform:none}
+.gift-reveal .letter-mini{margin:28px auto 0;padding:30px;border:1px solid #ffffff30;border-radius:22px;background:linear-gradient(160deg,#fff4f012,#ffffff05);box-shadow:0 20px 50px #0007;font:italic 300 clamp(1.2rem,4vw,1.7rem)/1.55 Fraunces,serif;color:var(--ivory);white-space:pre-wrap}
+@media (max-width:560px){
+  .music-player{grid-template-columns:auto 1fr;gap:12px}
+  .music-time{grid-column:2;text-align:left}
+}
+.gift-hint{margin-top:18px;font-size:.9rem;color:#fff4f0a8}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<canvas id="hearts" aria-hidden="true"></canvas>
+<main>
+
+<section class="hero">
+  <p class="hand" id="kicker">solo para ti</p>
+  <h1 id="nombre">Andrea</h1>
+  <div class="heart" id="burst" role="button" tabindex="0" aria-label="Lanzar corazones">❤</div>
+  <p class="scroll">baja despacito ↓</p>
+</section>
+
+<section>
+  <h2>Nuestro tiempo juntos</h2>
+  <p class="sub">Cada segundo contigo cuenta, y este reloj no se detiene.</p>
+  <div class="count" id="count">
+    <div><b id="d">0</b><span>días</span></div>
+    <div><b id="h">0</b><span>horas</span></div>
+    <div><b id="m">0</b><span>minutos</span></div>
+    <div><b id="s">0</b><span>segundos</span></div>
+  </div>
+</section>
+
+<section>
+  <h2>te dedica esta canción</h2>
+  <p class="sub">La melodía que siempre me hará pensar en nosotros.</p>
+  <div class="music-player">
+    <button class="music-play" id="musicPlay" type="button" aria-label="Reproducir canción" disabled>▶</button>
+    <div class="music-info">
+      <span class="music-name" id="musicName">Elige nuestra canción</span>
+      <input class="music-progress" id="musicProgress" type="range" min="0" max="100" value="0" aria-label="Progreso de la canción" disabled>
+    </div>
+    <span class="music-time" id="musicTime">0:00 / 0:00</span>
+  </div>
+  <label class="music-upload">Elegir canción de mi PC<input id="musicFile" type="file" accept="audio/*"></label>
+  <audio id="music" preload="metadata"></audio>
+</section>
+
+<section>
+  <h2>Nuestros momentos</h2>
+  <p class="sub">Cada foto es un recuerdo que quiero guardar toda la vida.</p>
+  <div class="grid" id="grid"></div>
+</section>
+
+<section>
+  <h2>Nuestra galaxia</h2>
+  <p class="sub">Entre millones de estrellas, mi favorita eres tú. Acércate y descubre nuestros recuerdos.</p>
+  <div class="galaxy" id="galaxy"><canvas id="gal" aria-hidden="true"></canvas><div class="core">L ❤ A</div></div>
+  <p class="tip">Toca cualquier foto para verla en grande.</p>
+</section>
+
+<section>
+  <h2>Nuestra película</h2>
+  <p class="sub">Un video para recordar lo felices que somos.</p>
+  <div class="film"><label class="slot" id="film">Toca para elegir un video<input type="file" accept="video/*,image/*"></label></div>
+</section>
+
+<section>
+  <h2>Lo que quiero decirte</h2>
+  <p class="sub">&nbsp;</p>
+  <div class="letter" id="letter" aria-live="polite"></div>
+</section>
+
+<section>
+  <h2>Razones por las que te amo</h2>
+  <p class="sub">Toca cada corazón para descubrirlas.</p>
+  <div class="cards" id="cards"></div>
+</section>
+
+<section class="end">
+  <h2>Una última pregunta</h2>
+  <p class="sub" style="margin-inline:auto">¿Quieres seguir creando recuerdos conmigo?</p>
+  <button class="btn" id="yesBtn">Sí, siempre ❤</button>
+  <p class="yes" id="yes">Te amo, mi vida.</p>
+  <div class="gift" id="gift" hidden>
+    <h2 style="margin-top:28px">Tengo una sorpresa para ti</h2>
+    <button class="gift-box" id="giftBtn" type="button" aria-label="Abrir el regalo" aria-expanded="false">
+      <span class="box-lid"></span>
+      <span class="box-body"></span>
+      <span class="box-ribbon-v"></span>
+      <span class="box-ribbon-h"></span>
+    </button>
+    <p class="gift-hint" id="giftHint">Toca el regalo para abrirlo</p>
+    <div class="gift-reveal" aria-live="polite">
+      <p class="letter-mini" id="giftText"></p>
+    </div>
+  </div>
+</section>
+
+</main>
+<div id="lb" role="dialog" aria-modal="true" aria-label="Vista ampliada"></div>
+<script>
+/* ======= EDITA AQUÍ ======= */
+const NOMBRE = "Andrea";                  // su nombre
+const DESDE  = "2025-06-21T00:00:00";     // fecha en que empezaron
+const MUSICA = "videos/cancion.mp3";      // canción guardada en la carpeta videos
+const TITULO_MUSICA = "Cancion de fondo ";
+const CARTA  = "Desde que llegaste a mi vida, todo tiene más color. Gracias por cada risa, por cada abrazo y por quedarte conmigo incluso en los días difíciles. Hice esta página para que cada vez que quieras recordar lo mucho que te quiero, solo tengas que abrirla. Eres mi lugar favorito en el mundo.\n\nTe amo hoy, mañana y siempre.";
+const REGALO  = "Mi regalo eres tú y todos los momentos que tenemos por vivir. Te prometo seguir eligiéndote, cuidarte y hacerte sonreír.\n\nTe amo más que ayer y menos que mañana.";
+const PIES   = ["Nuestra primera foto","Ese día","Siempre contigo","Mi risa favorita","Aventuras","Mi lugar seguro"];
+const RAZONES = [
+  ["Tu sonrisa","Ilumina hasta mis días más grises."],
+  ["Tu paz","Contigo todo se siente en calma."],
+  ["Tu forma de ser","Auténtica, dulce y única."],
+  ["Tus abrazos","Mi lugar favorito en el mundo."],
+  ["Tu risa","Es mi canción favorita."],
+  ["Todo lo nuestro","Contigo, hasta lo simple es un plan perfecto."]
+];
+const GALAXIA_TOTAL = 62;   // cuántas fotos hay en fotos/galaxia/ (1.jpg, 2.jpg ... N.jpg). 0 = cuadros vacíos de ejemplo
+const MOMENTOS = ["fotos/momentos/1.jpg", 
+                  "fotos/momentos/2.jpg",
+                  "fotos/momentos/3.jpg",
+                  "fotos/momentos/4.jpg",
+                  "fotos/momentos/5.jpg",
+                  "fotos/momentos/6.jpg"
+                ];       // 6 fotos de "Nuestros momentos", en orden: ["fotos/momentos/1.jpg", ...]
+const VIDEO = "videos/nuestro.mp4";          // tu video: "videos/nuestro.mp4"
+/* ========================== */
+
+document.getElementById('nombre').textContent = NOMBRE;
+document.getElementById('giftText').textContent = REGALO;
+
+// Reproductor de música
+const music=document.getElementById('music');
+const musicPlay=document.getElementById('musicPlay');
+const musicProgress=document.getElementById('musicProgress');
+const musicTime=document.getElementById('musicTime');
+const musicName=document.getElementById('musicName');
+let musicObjectUrl='';
+
+function formatTime(seconds){
+  if(!Number.isFinite(seconds))return '0:00';
+  const minutes=Math.floor(seconds/60);
+  return `${minutes}:${String(Math.floor(seconds%60)).padStart(2,'0')}`;
+}
+function enableMusic(name){
+  musicName.textContent=name;
+  musicPlay.disabled=false;
+  musicProgress.disabled=false;
+  musicPlay.textContent='▶';
+  musicPlay.setAttribute('aria-label','Reproducir canción');
+}
+musicPlay.onclick=async()=>{
+  if(music.paused){
+    try{await music.play();}catch(error){return;}
+  }else{
+    music.pause();
+  }
+};
+music.onplay=()=>{
+  musicPlay.textContent='❚❚';
+  musicPlay.setAttribute('aria-label','Pausar canción');
+};
+music.onpause=()=>{
+  musicPlay.textContent='▶';
+  musicPlay.setAttribute('aria-label','Reproducir canción');
+};
+music.onloadedmetadata=()=>{
+  musicProgress.value=0;
+  musicTime.textContent=`0:00 / ${formatTime(music.duration)}`;
+};
+music.ontimeupdate=()=>{
+  if(music.duration){
+    musicProgress.value=(music.currentTime/music.duration)*100;
+  }
+  musicTime.textContent=`${formatTime(music.currentTime)} / ${formatTime(music.duration)}`;
+};
+music.onended=()=>{
+  music.currentTime=0;
+  musicProgress.value=0;
+};
+musicProgress.oninput=()=>{
+  if(music.duration){
+    music.currentTime=(Number(musicProgress.value)/100)*music.duration;
+  }
+};
+document.getElementById('musicFile').onchange=e=>{
+  const file=e.target.files[0];
+  if(!file)return;
+  if(musicObjectUrl)URL.revokeObjectURL(musicObjectUrl);
+  musicObjectUrl=URL.createObjectURL(file);
+  music.src=musicObjectUrl;
+  enableMusic(file.name);
+};
+if(MUSICA){
+  music.src=MUSICA;
+  enableMusic(TITULO_MUSICA);
+}
+
+// Contador
+const pad=n=>String(n).padStart(2,'0');
+function tick(){
+  let t=Math.max(0,Date.now()-new Date(DESDE).getTime())/1000;
+  d.textContent=Math.floor(t/86400);
+  h.textContent=pad(Math.floor(t%86400/3600));
+  m.textContent=pad(Math.floor(t%3600/60));
+  s.textContent=pad(Math.floor(t%60));
+}
+tick(); setInterval(tick,1000);
+
+// Subir foto/video a un cuadro (solo en este navegador)
+function wire(slot){
+  const inp=slot.querySelector('input');
+  inp.addEventListener('change',()=>{
+    const f=inp.files[0]; if(!f) return;
+    const url=URL.createObjectURL(f);
+    slot.querySelector('img,video')?.remove();
+    const el=document.createElement(f.type.startsWith('video')?'video':'img');
+    el.src=url; if(el.tagName==='VIDEO'){el.controls=true;el.playsInline=true;}
+    slot.appendChild(el);
+  });
+}
+const grid=document.getElementById('grid');
+PIES.forEach((p,i)=>{
+  const r=((i%3)-1)*3+(i%2?1.5:-1.5);
+  grid.insertAdjacentHTML('beforeend',`<figure class="pol" style="--r:${r}deg"><label class="slot">📷<br>Foto o video<input type="file" accept="image/*,video/*"></label><figcaption contenteditable="true" spellcheck="false">${p}</figcaption></figure>`);
+});
+grid.querySelectorAll('.slot').forEach(wire); wire(document.getElementById('film'));
+function media(src){
+  const v=/\.(mp4|webm|mov|m4v)$/i.test(src),e=document.createElement(v?'video':'img');e.src=src;
+  if(v){e.muted=e.loop=e.autoplay=e.playsInline=true}else{e.loading='lazy';e.decoding='async';e.alt=''}
+  return e;
+}
+MOMENTOS.forEach((s,i)=>{const sl=grid.querySelectorAll('.slot')[i];if(s&&sl){sl.appendChild(media(s));sl.querySelector('input').disabled=true}});
+if(VIDEO){const f=document.getElementById('film'),v=media(VIDEO);v.controls=true;v.muted=false;v.loop=false;v.autoplay=false;f.appendChild(v);f.querySelector('input').disabled=true}
+
+// Galaxia: las fotos salen del centro en espiral
+(function(){
+  const g=document.getElementById('galaxy'),cv2=document.getElementById('gal'),c=cv2.getContext('2d');
+  const dpr=Math.min(devicePixelRatio||1,2),N=GALAXIA_TOTAL>0?GALAXIA_TOTAL:14;let S=0,vis=false,started=false;
+  const s=Math.min(16,79/Math.sqrt(N)),edge=50-s/2-1;
+  g.classList.toggle('many',N>40);
+  const lb=document.getElementById('lb');
+  const closeLb=()=>{lb.style.display='none';lb.innerHTML=''};
+  lb.onclick=ev=>{if(ev.target.tagName!=='VIDEO')closeLb()};
+  addEventListener('keydown',e=>{if(e.key==='Escape')closeLb()});
+  for(let i=0;i<N;i++){
+    const r=9+Math.sqrt((i+.5)/N)*(edge-9),a=i*2.39996;
+    const x=50+r*Math.cos(a),y=50+r*Math.sin(a);
+    const el=document.createElement('div');el.className='gx';
+    el.style.cssText=`left:${x-s/2}%;top:${y-s/2}%;width:${s}%;--x:${x};--y:${y};--d:${Math.min(i*35,3500)}ms`;
+    el.innerHTML=`<div class="ph" style="--br:${i%3?'50%':'22%'};animation-delay:${-(i%12)*.6}s"><label class="slot"><span>+</span><input type="file" accept="image/*,video/*"></label></div>`;
+    g.appendChild(el);
+    const sl=el.querySelector('.slot'),inp=sl.querySelector('input');
+    if(GALAXIA_TOTAL>0){
+      const m=media(`fotos/galaxia/${i+1}.jpg`);m.onerror=()=>el.remove();
+      sl.appendChild(m);inp.disabled=true;
+    }
+    inp.onchange=()=>{const f=inp.files[0];if(!f)return;sl.querySelector('img,video')?.remove();
+      const v=f.type.startsWith('video'),e=document.createElement(v?'video':'img');e.src=URL.createObjectURL(f);
+      if(v){e.muted=true;e.loop=true;e.autoplay=true;e.playsInline=true}sl.appendChild(e)};
+    sl.addEventListener('click',ev=>{const m=sl.querySelector('img,video');if(!m)return;ev.preventDefault();
+      lb.innerHTML='';const e=m.cloneNode();e.removeAttribute('loading');if(e.tagName==='VIDEO'){e.controls=true;e.loop=false}
+      lb.appendChild(e);lb.style.display='grid'});
+  }
+  const st=[],cols2=['#fff4f0','#ffb48a','#ff8fb3','#b79cff'];
+  for(let i=0;i<1500;i++){const halo=i>1200,t=halo?Math.random():Math.pow(Math.random(),.7);
+    st.push({a:halo?Math.random()*6.283:t*5+(Math.random()<.5?0:Math.PI)+(Math.random()-.5)*(.25+t*.5),r:t,z:Math.random()*1.6+.4,c:cols2[Math.random()*4|0],o:.3+Math.random()*.7})}
+  function size(){S=g.clientWidth;cv2.width=S*dpr;cv2.height=S*dpr}
+  function draw(t){
+    const R=S*dpr/2,rot=t*.00003;c.clearRect(0,0,2*R,2*R);
+    const gr=c.createRadialGradient(R,R,0,R,R,R*.5);gr.addColorStop(0,'#ff5c8aaa');gr.addColorStop(.35,'#b79cff44');gr.addColorStop(1,'#0000');
+    c.fillStyle=gr;c.fillRect(0,0,2*R,2*R);
+    for(const q of st){const a=q.a+rot;c.globalAlpha=q.o;c.fillStyle=q.c;c.fillRect(R+Math.cos(a)*q.r*R*.98,R+Math.sin(a)*q.r*R*.98,q.z*dpr,q.z*dpr)}
+    c.globalAlpha=1;
+  }
+  size();addEventListener('resize',()=>{size();draw(performance.now())});
+  const calm=matchMedia('(prefers-reduced-motion:reduce)').matches;
+  (function frame(t){if(vis||!started)draw(t);if(!calm)requestAnimationFrame(frame)})(0);
+  new IntersectionObserver(([e])=>{
+    vis=e.isIntersecting;
+    if(vis&&!started){started=true;const w=g.clientWidth;
+      g.querySelectorAll('.gx').forEach(el=>{
+        el.style.setProperty('--tx',((50-parseFloat(el.style.getPropertyValue('--x')))*w/100)+'px');
+        el.style.setProperty('--ty',((50-parseFloat(el.style.getPropertyValue('--y')))*w/100)+'px')});
+      requestAnimationFrame(()=>requestAnimationFrame(()=>g.classList.add('go')));
+    }
+  },{threshold:.3}).observe(g);
+})();
+
+// Razones
+document.getElementById('cards').innerHTML=RAZONES.map(([a,b])=>`<button class="card"><i class="f">${a}</i><i class="b">${b}</i></button>`).join('');
+document.querySelectorAll('.card').forEach(c=>c.onclick=()=>{c.classList.toggle('on');boom(c.getBoundingClientRect().left+c.offsetWidth/2,c.getBoundingClientRect().top+60,8)});
+
+// Carta escrita a mano al llegar
+const L=document.getElementById('letter'); let typed=false;
+new IntersectionObserver((e,o)=>{ if(e[0].isIntersecting&&!typed){typed=true;o.disconnect();let i=0;
+  (function go(){ if(i<=CARTA.length){L.textContent=CARTA.slice(0,i++);setTimeout(go,28);} else L.classList.add('done'); })();
+}},{threshold:.5}).observe(L);
+L.style.whiteSpace='pre-wrap';
+
+// Corazones flotando
+const cv=document.getElementById('hearts'),cx=cv.getContext('2d');
+let W,H,hs=[],bs=[];
+const rs=()=>{W=cv.width=innerWidth;H=cv.height=innerHeight};rs();addEventListener('resize',rs);
+const cols=['#ff5c8a','#ffb48a','#b79cff','#ff8fb3'];
+function mk(init){return{x:Math.random()*W,y:init?Math.random()*H:H+30,s:8+Math.random()*18,v:.3+Math.random()*.8,w:Math.random()*6,c:cols[Math.random()*4|0],a:.12+Math.random()*.3}}
+for(let i=0;i<32;i++)hs.push(mk(true));
+function heart(x,y,s){cx.beginPath();cx.moveTo(x,y+s/4);cx.bezierCurveTo(x,y-s/2,x-s,y-s/2,x-s,y+s/6);cx.bezierCurveTo(x-s,y+s*.7,x,y+s,x,y+s*1.2);cx.bezierCurveTo(x,y+s,x+s,y+s*.7,x+s,y+s/6);cx.bezierCurveTo(x+s,y-s/2,x,y-s/2,x,y+s/4);cx.fill()}
+function boom(x,y,n=24){for(let i=0;i<n;i++){const a=Math.random()*6.28,v=2+Math.random()*5;bs.push({x,y,vx:Math.cos(a)*v,vy:Math.sin(a)*v-2,s:6+Math.random()*10,c:cols[Math.random()*4|0],l:1})}}
+const still=matchMedia('(prefers-reduced-motion:reduce)').matches;
+(function loop(){
+  cx.clearRect(0,0,W,H);
+  hs.forEach((p,i)=>{p.y-=p.v;p.w+=.02;p.x+=Math.sin(p.w)*.5;if(p.y<-40)hs[i]=mk(false);cx.globalAlpha=p.a;cx.fillStyle=p.c;heart(p.x,p.y,p.s)});
+  bs=bs.filter(b=>b.l>0);bs.forEach(b=>{b.x+=b.vx;b.y+=b.vy;b.vy+=.12;b.l-=.012;cx.globalAlpha=Math.max(b.l,0);cx.fillStyle=b.c;heart(b.x,b.y,b.s)});
+  if(!still)requestAnimationFrame(loop);
+})();
+if(still)setTimeout(()=>{},0);
+const bt=document.getElementById('burst');
+const hb=e=>{const r=bt.getBoundingClientRect();boom(r.left+r.width/2,r.top+r.height/2,40)};
+bt.onclick=hb;bt.onkeydown=e=>{if(e.key==='Enter'||e.key===' ')hb()};
+document.getElementById('yesBtn').onclick=e=>{
+  yes.style.display='block';
+  const gift=document.getElementById('gift');
+  gift.hidden=false;
+  for(let i=0;i<6;i++)setTimeout(()=>boom(Math.random()*W,H*.3+Math.random()*H*.4,40),i*250);
+  if(still)requestAnimationFrame(loop);
+};
+document.getElementById('giftBtn').onclick=e=>{
+  const gift=document.getElementById('gift');
+  if(gift.classList.contains('open'))return;
+  gift.classList.add('open');
+  e.currentTarget.setAttribute('aria-expanded','true');
+  document.getElementById('giftHint').textContent='Para ti, con todo mi amor ❤';
+  for(let i=0;i<8;i++)setTimeout(()=>boom(W/2,H*.7,30),i*180);
+};
+</script>
+</body>
+</html>

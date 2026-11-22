@@ -1,0 +1,6 @@
+COMO USAR
+1. Pon tus fotos de la galaxia en fotos/galaxia/ con nombres 1.jpg, 2.jpg, 3.jpg ... (sin saltos).
+2. En index.html, cambia GALAXIA_TOTAL por cuantas fotos pusiste (ej: 80).
+3. Las 6 fotos de "Nuestros momentos" van en fotos/momentos/ y se listan en MOMENTOS.
+4. Tu video va en videos/ y su ruta en VIDEO.
+5. Abre index.html con doble clic para probar. Para compartirla, sube la carpeta a Netlify Drop, GitHub Pages o Vercel.
